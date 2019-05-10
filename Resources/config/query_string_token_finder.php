@@ -11,19 +11,16 @@ declare(strict_types=1);
  * of the MIT license.  See the LICENSE file for details.
  */
 
-use OAuth2Framework\Component\BearerTokenType\BearerToken;
+use OAuth2Framework\Component\BearerTokenType\QueryStringTokenFinder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return function (ContainerConfigurator $container) {
     $container = $container->services()->defaults()
         ->private()
-        ->autoconfigure()
-        ->autowire();
+        ->autowire()
+        ->autoconfigure();
 
-    $container->set('oauth2_security.token_type.bearer_token')
-        ->class(BearerToken::class)
-        ->args([
-            '%oauth2_security.token_type.bearer_token.realm%',
-        ])
-        ->tag('oauth2_security_token_type');
+    $container->set('oauth2_security.bearer_token.query_string_token_finder')
+        ->class(QueryStringTokenFinder::class)
+        ->tag('oauth2_security_bearer_token_finder');
 };
